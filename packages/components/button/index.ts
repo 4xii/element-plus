@@ -9,3 +9,4 @@ export const ElButtonGroup = withNoopInstall(ButtonGroup)
 export default ElButton
 
 export * from './src/button'
+export * from './src/use-button-config'

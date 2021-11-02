@@ -38,6 +38,7 @@ import { elButtonGroupKey, elFormKey } from '@element-plus/tokens'
 import { Loading } from '@element-plus/icons'
 
 import { buttonEmits, buttonProps } from './button'
+import { useButtonConfigInject } from './use-button-config'
 
 export default defineComponent({
   name: 'ElButton',
@@ -52,10 +53,19 @@ export default defineComponent({
 
   setup(props, { emit, slots }) {
     const elBtnGroup = inject(elButtonGroupKey, undefined)
+    const globalConfig = useButtonConfigInject()
+
+    const autoInsertSpaceBetweenTwoChineseChars = computed(() => {
+      return props.autoInsertSpace ?? globalConfig.value.autoInsertSpace
+    })
+
     // add space between two characters in Chinese
     const shouldAddSpace = computed(() => {
       const defaultSlot = slots.default?.()
-      if (defaultSlot?.length === 1) {
+      if (
+        autoInsertSpaceBetweenTwoChineseChars.value &&
+        defaultSlot?.length === 1
+      ) {
         const slot = defaultSlot[0]
         if (slot?.type === Text) {
           const text = slot.children
